@@ -20,8 +20,8 @@ App::uses('Folder', 'Utility');
 App::uses('MediaValidation', 'Media.Lib');
 App::uses('TransferValidation', 'Media.Lib');
 
-//require_once 'Mime/Type.php';
-App::uses('Type', 'mm/Mime');
+require_once 'Mime/Type.php';
+//App::uses('Type', 'mm/Mime');
 
 /**
  * Transfer Behavior Class
@@ -779,7 +779,7 @@ class TransferBehavior extends ModelBehavior {
 			if (($type == 'temporary' && empty($$type)) || !isset(${$type}['extension'])) {
 				continue;
 			}
-			if (!MediaValidation::extension(${$type}['extension'], $deny, $allow)) {
+			if (!MediaValidation::extension(${$type}['file'], $deny, $allow)) {
 				return false;
 			}
 		}
