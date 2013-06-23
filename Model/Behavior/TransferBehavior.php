@@ -436,6 +436,9 @@ class TransferBehavior extends ModelBehavior {
 			case 'file-upload-remote>>uploaded-file-local>>file-local':
 				$result = move_uploaded_file($temporary['file'], $destination['file']);
 				break;
+			case 'file-upload-remote>>file-local>>file-local':
+				$result = copy($temporary['file'], $destination['file']);
+				break;
 			case 'file-local>>>>file-local':
 				$result = copy($source['file'], $destination['file']);
 				break;
@@ -564,7 +567,12 @@ class TransferBehavior extends ModelBehavior {
 			);
 		} elseif (MediaValidation::file($resource)) {
 			return $this->transferMeta($Model, $resource);
-		}
+		} elseif ($resource['email_attachment']){
+			return array_merge(
+				$this->transferMeta($Model, $resource['tmp_name']),
+				array('error' => $resource['error'])
+			);
+                }
 		return false;
 	}
 
